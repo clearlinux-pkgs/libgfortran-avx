@@ -12,7 +12,7 @@
 
 Name     : libgfortran-avx.spec
 Version  : 5.3.0
-Release  : 1
+Release  : 2
 URL      : http://www.gnu.org/software/gcc/
 Source0  : http://ftp.gnu.org/gnu/gcc/gcc-5.3.0/gcc-5.3.0.tar.bz2
 Source1  : ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-%{isl_version}.tar.bz2
@@ -214,6 +214,7 @@ rm -rf %{buildroot}/usr/bin
 rm -rf %{buildroot}/usr/lib64/gcc/
 rm -rf %{buildroot}/usr/lib64/*.a
 rm -rf %{buildroot}/usr/lib64/*.so
+rm -rf %{buildroot}/usr/lib64/*.spec
 mkdir -p %{buildroot}/usr/lib64/avx2
 mv %{buildroot}/usr/lib64/*so*  %{buildroot}/usr/lib64/avx2/
 
