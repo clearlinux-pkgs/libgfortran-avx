@@ -10,7 +10,7 @@
 # Highest optimisation ABI we target
 %define mtune haswell
 
-Name     : libgfortran-avx.spec
+Name     : libgfortran-avx
 Version  : 5.3.0
 Release  : 2
 URL      : http://www.gnu.org/software/gcc/
