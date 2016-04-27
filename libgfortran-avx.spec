@@ -11,16 +11,15 @@
 %define mtune haswell
 
 Name     : libgfortran-avx
-Version  : 5.3.0
+Version  : 6.1.0
 Release  : 2
 URL      : http://www.gnu.org/software/gcc/
-Source0  : http://ftp.gnu.org/gnu/gcc/gcc-5.3.0/gcc-5.3.0.tar.bz2
+Source0  : http://ftp.gnu.org/gnu/gcc/gcc-6.1.0/gcc-6.1.0.tar.bz2
 Source1  : ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-%{isl_version}.tar.bz2
 Summary  : AVX optinuzed libgfortran
 Group    : Development/Tools
 License  : BSD-3-Clause BSL-1.0 GFDL-1.2 GFDL-1.3 GPL-2.0 GPL-3.0 LGPL-2.1 LGPL-3.0 MIT
 Patch0   : 0001-Fix-stack-protection-issues.patch
-Patch1   : target_clones_gcc-5a.patch
 Patch2   : openmp-vectorize.patch
 
 BuildRequires : bison
@@ -142,7 +141,6 @@ GNU cc and gcc C compilers.
 %prep
 %setup -q -n gcc-%{version}
 %patch0 -p1
-%patch1 -p1
 %patch2 -p1
 
 %build
@@ -220,20 +218,18 @@ mv %{buildroot}/usr/lib64/*so*  %{buildroot}/usr/lib64/avx2/
 
 %files
 %exclude /usr/lib64/avx2/libatomic.so.1
-%exclude /usr/lib64/avx2/libatomic.so.1.1.0
+%exclude /usr/lib64/avx2/libatomic.so.1.2.0
 %exclude /usr/lib64/avx2/libcc1.so.0
 %exclude /usr/lib64/avx2/libcc1.so.0.0.0
 %exclude /usr/lib64/avx2/libgcc_s.so.1
 /usr/lib64/avx2/libgfortran.so.3
 /usr/lib64/avx2/libgfortran.so.3.0.0
-/usr/lib64/avx2/libgomp-plugin-host_nonshm.so.1
-/usr/lib64/avx2/libgomp-plugin-host_nonshm.so.1.0.0
 /usr/lib64/avx2/libgomp.so.1
 /usr/lib64/avx2/libgomp.so.1.0.0
-%exclude /usr/lib64/avx2/libmpx.so.0
-%exclude /usr/lib64/avx2/libmpx.so.0.0.0
-%exclude /usr/lib64/avx2/libmpxwrappers.so.0
-%exclude /usr/lib64/avx2/libmpxwrappers.so.0.0.0
+%exclude /usr/lib64/avx2/libmpx.so.2
+%exclude /usr/lib64/avx2/libmpx.so.2.0.0
+%exclude /usr/lib64/avx2/libmpxwrappers.so.2
+%exclude /usr/lib64/avx2/libmpxwrappers.so.2.0.0
 /usr/lib64/avx2/libquadmath.so.0
 /usr/lib64/avx2/libquadmath.so.0.0.0
 %exclude /usr/lib64/avx2/libssp.so.0
