@@ -11,10 +11,10 @@
 %define mtune haswell
 
 Name     : libgfortran-avx
-Version  : 6.1.0
+Version  : 6.2.0
 Release  : 4
 URL      : http://www.gnu.org/software/gcc/
-Source0  : http://ftp.gnu.org/gnu/gcc/gcc-6.1.0/gcc-6.1.0.tar.bz2
+Source0  : http://ftp.gnu.org/gnu/gcc/gcc-6.2.0/gcc-6.2.0.tar.bz2
 Source1  : ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-%{isl_version}.tar.bz2
 Summary  : AVX optinuzed libgfortran
 Group    : Development/Tools
@@ -157,7 +157,7 @@ export CFLAGS="-march=ivybridge -g -O3 -fstack-protector -Wl,-z -Wl,now -Wl,-z -
 export CXXFLAGS="-march=ivybridge -g -O3  -Wl,-z,max-page-size=0x1000"
 export CFLAGS_FOR_TARGET="$CFLAGS"
 
-export CPATH=%{_includedir}
+export CPATH=/usr/include
 export LIBRARY_PATH=%{_libdir}
 
 ../gcc-%{version}/configure \
