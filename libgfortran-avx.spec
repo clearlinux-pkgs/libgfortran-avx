@@ -11,10 +11,10 @@
 %define mtune haswell
 
 Name     : libgfortran-avx
-Version  : 6.2.0
+Version  : 6.3.0
 Release  : 4
 URL      : http://www.gnu.org/software/gcc/
-Source0  : http://ftp.gnu.org/gnu/gcc/gcc-6.2.0/gcc-6.2.0.tar.bz2
+Source0  : http://ftp.gnu.org/gnu/gcc/gcc-6.3.0/gcc-6.3.0.tar.bz2
 Source1  : ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-%{isl_version}.tar.bz2
 Summary  : AVX optinuzed libgfortran
 Group    : Development/Tools
