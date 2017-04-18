@@ -213,24 +213,24 @@ rm -rf %{buildroot}/usr/lib64/gcc/
 rm -rf %{buildroot}/usr/lib64/*.a
 rm -rf %{buildroot}/usr/lib64/*.so
 rm -rf %{buildroot}/usr/lib64/*.spec
-mkdir -p %{buildroot}/usr/lib64/avx2
-mv %{buildroot}/usr/lib64/*so*  %{buildroot}/usr/lib64/avx2/
+mkdir -p %{buildroot}/usr/lib64/haswell
+mv %{buildroot}/usr/lib64/*so*  %{buildroot}/usr/lib64/haswell/
 
 %files
-%exclude /usr/lib64/avx2/libatomic.so.1
-%exclude /usr/lib64/avx2/libatomic.so.1.2.0
-%exclude /usr/lib64/avx2/libcc1.so.0
-%exclude /usr/lib64/avx2/libcc1.so.0.0.0
-%exclude /usr/lib64/avx2/libgcc_s.so.1
-/usr/lib64/avx2/libgfortran.so.3
-/usr/lib64/avx2/libgfortran.so.3.0.0
-/usr/lib64/avx2/libgomp.so.1
-/usr/lib64/avx2/libgomp.so.1.0.0
-%exclude /usr/lib64/avx2/libmpx.so.2
-%exclude /usr/lib64/avx2/libmpx.so.2.0.0
-%exclude /usr/lib64/avx2/libmpxwrappers.so.2
-%exclude /usr/lib64/avx2/libmpxwrappers.so.2.0.0
-/usr/lib64/avx2/libquadmath.so.0
-/usr/lib64/avx2/libquadmath.so.0.0.0
-%exclude /usr/lib64/avx2/libssp.so.0
-%exclude /usr/lib64/avx2/libssp.so.0.0.0
+%exclude /usr/lib64/haswell/libatomic.so.1
+%exclude /usr/lib64/haswell/libatomic.so.1.2.0
+%exclude /usr/lib64/haswell/libcc1.so.0
+%exclude /usr/lib64/haswell/libcc1.so.0.0.0
+%exclude /usr/lib64/haswell/libgcc_s.so.1
+/usr/lib64/haswell/libgfortran.so.3
+/usr/lib64/haswell/libgfortran.so.3.0.0
+/usr/lib64/haswell/libgomp.so.1
+/usr/lib64/haswell/libgomp.so.1.0.0
+%exclude /usr/lib64/haswell/libmpx.so.2
+%exclude /usr/lib64/haswell/libmpx.so.2.0.0
+%exclude /usr/lib64/haswell/libmpxwrappers.so.2
+%exclude /usr/lib64/haswell/libmpxwrappers.so.2.0.0
+/usr/lib64/haswell/libquadmath.so.0
+/usr/lib64/haswell/libquadmath.so.0.0.0
+%exclude /usr/lib64/haswell/libssp.so.0
+%exclude /usr/lib64/haswell/libssp.so.0.0.0
