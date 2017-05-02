@@ -2,7 +2,7 @@
 %define gcc_target %{_arch}-generic-linux
 %define libstdcxx_maj 6
 %define libstdcxx_full 6.0.21
-%define isl_version 0.14
+%define isl_version 0.16.1
 
 %define debug_package %{nil}
 
@@ -11,10 +11,10 @@
 %define mtune haswell
 
 Name     : libgfortran-avx
-Version  : 6.3.0
+Version  : 7.1.0
 Release  : 6
 URL      : http://www.gnu.org/software/gcc/
-Source0  : http://ftp.gnu.org/gnu/gcc/gcc-6.3.0/gcc-6.3.0.tar.bz2
+Source0  :  https://ftp.gnu.org/pub/gnu/gcc/gcc-7.1.0/gcc-7.1.0.tar.gz
 Source1  : ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-%{isl_version}.tar.bz2
 Summary  : AVX optinuzed libgfortran
 Group    : Development/Tools
@@ -155,7 +155,7 @@ unset CFLAGS
 unset CXXFLAGS
 export CFLAGS="-march=ivybridge -g -O3 -fstack-protector -Wl,-z -Wl,now -Wl,-z -Wl,relro  -Wl,-z,max-page-size=0x1000"
 export CXXFLAGS="-march=ivybridge -g -O3  -Wl,-z,max-page-size=0x1000"
-export CFLAGS_FOR_TARGET="$CFLAGS"
+export CFLAGS_FOR_TARGET="$CFLAGS -march=haswell"
 
 export CPATH=/usr/include
 export LIBRARY_PATH=%{_libdir}
@@ -191,7 +191,7 @@ export LIBRARY_PATH=%{_libdir}
     --with-system-libunwind \
     --with-gnu-ld \
     --with-tune=haswell \
-    --with-arch=ivybridge \
+    --with-arch=haswell \
     --disable-bootstrap \
     --enable-libmpx
 
@@ -222,14 +222,14 @@ mv %{buildroot}/usr/lib64/*so*  %{buildroot}/usr/lib64/haswell/
 %exclude /usr/lib64/haswell/libcc1.so.0
 %exclude /usr/lib64/haswell/libcc1.so.0.0.0
 %exclude /usr/lib64/haswell/libgcc_s.so.1
-/usr/lib64/haswell/libgfortran.so.3
-/usr/lib64/haswell/libgfortran.so.3.0.0
+/usr/lib64/haswell/libgfortran.so.4
+/usr/lib64/haswell/libgfortran.so.4.0.0
 /usr/lib64/haswell/libgomp.so.1
 /usr/lib64/haswell/libgomp.so.1.0.0
 %exclude /usr/lib64/haswell/libmpx.so.2
-%exclude /usr/lib64/haswell/libmpx.so.2.0.0
+%exclude /usr/lib64/haswell/libmpx.so.2.0.1
 %exclude /usr/lib64/haswell/libmpxwrappers.so.2
-%exclude /usr/lib64/haswell/libmpxwrappers.so.2.0.0
+%exclude /usr/lib64/haswell/libmpxwrappers.so.2.0.1
 /usr/lib64/haswell/libquadmath.so.0
 /usr/lib64/haswell/libquadmath.so.0.0.0
 %exclude /usr/lib64/haswell/libssp.so.0
