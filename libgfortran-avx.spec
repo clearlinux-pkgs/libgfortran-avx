@@ -43,6 +43,8 @@ BuildRequires : libxslt
 BuildRequires : graphviz
 BuildRequires : gdb-dev
 
+Requires: libgfortran-compat-soname3
+
 Requires: gcc-libubsan
 
 Provides:       gcc-symlinks
