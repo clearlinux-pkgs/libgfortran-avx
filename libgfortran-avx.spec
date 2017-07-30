@@ -12,7 +12,7 @@
 
 Name     : libgfortran-avx
 Version  : 7.1.0
-Release  : 14
+Release  : 15
 URL      : http://www.gnu.org/software/gcc/
 Source0  :  https://ftp.gnu.org/pub/gnu/gcc/gcc-7.1.0/gcc-7.1.0.tar.gz
 Source1  : ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-0.16.1.tar.bz2
@@ -161,9 +161,9 @@ unset CFLAGS
 unset CXXFLAGS
 export CFLAGS="-march=ivybridge -g -O3 -fstack-protector -Wl,-z -Wl,now -Wl,-z -Wl,relro  -Wl,-z,max-page-size=0x1000"
 export CXXFLAGS="-march=ivybridge -g -O3  -Wl,-z,max-page-size=0x1000"
-export CFLAGS_FOR_TARGET="$CFLAGS -march=haswell -fno-semantic-interposition "
-export CXXFLAGS_FOR_TARGET="$CXXFLAGS -march=haswell -fno-semantic-interposition "
-export FFLAGS_FOR_TARGET="$FFLAGS -march=haswell -fno-semantic-interposition "
+export CFLAGS_FOR_TARGET="$CFLAGS -march=haswell -mtune=skylake -fno-semantic-interposition "
+export CXXFLAGS_FOR_TARGET="$CXXFLAGS -march=haswell -mtune=skylake -fno-semantic-interposition "
+export FFLAGS_FOR_TARGET="$FFLAGS -march=haswell -mtune=skylake -fno-semantic-interposition "
 
 export CPATH=/usr/include
 export LIBRARY_PATH=%{_libdir}
@@ -215,6 +215,8 @@ unset CXXFLAGS
 export CFLAGS="-march=ivybridge -g -O3 -fstack-protector -Wl,-z -Wl,now -Wl,-z -Wl,relro  -Wl,-z,max-page-size=0x1000"
 export CXXFLAGS="-march=ivybridge -g -O3  -Wl,-z,max-page-size=0x1000"
 export CFLAGS_FOR_TARGET="$CFLAGS -march=skylake-avx512 -ftree-vectorize -ftree-loop-vectorize -fno-semantic-interposition"
+export CXXFLAGS_FOR_TARGET="$CXXFLAGS -march=skylake-avx512 -ftree-vectorize -ftree-loop-vectorize -fno-semantic-interposition"
+export FFLAGS_FOR_TARGET="$FFLAGS -march=skylake-avx512 -ftree-vectorize -ftree-loop-vectorize -fno-semantic-interposition"
 
 export CPATH=/usr/include
 export LIBRARY_PATH=%{_libdir}
