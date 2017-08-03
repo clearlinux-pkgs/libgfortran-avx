@@ -12,7 +12,7 @@
 
 Name     : libgfortran-avx
 Version  : 7.1.0
-Release  : 17
+Release  : 18
 URL      : http://www.gnu.org/software/gcc/
 Source0  :  https://ftp.gnu.org/pub/gnu/gcc/gcc-7.1.0/gcc-7.1.0.tar.gz
 Source1  : ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-0.16.1.tar.bz2
@@ -233,29 +233,8 @@ mv %{buildroot}/usr/lib64/*so*  %{buildroot}/usr/lib64/haswell/
 /usr/lib64/haswell/libgfortran.so.4.0.0
 /usr/lib64/haswell/libgomp.so.1
 /usr/lib64/haswell/libgomp.so.1.0.0
-%exclude /usr/lib64/haswell/libmpx.so.2
-%exclude /usr/lib64/haswell/libmpx.so.2.0.1
-%exclude /usr/lib64/haswell/libmpxwrappers.so.2
-%exclude /usr/lib64/haswell/libmpxwrappers.so.2.0.1
 /usr/lib64/haswell/libquadmath.so.0
 /usr/lib64/haswell/libquadmath.so.0.0.0
 %exclude /usr/lib64/haswell/libssp.so.0
 %exclude /usr/lib64/haswell/libssp.so.0.0.0
 
-%exclude /usr/lib64/haswell/avx512_1/libatomic.so.1
-%exclude /usr/lib64/haswell/avx512_1/libatomic.so.1.2.0
-%exclude /usr/lib64/haswell/avx512_1/libcc1.so.0
-%exclude /usr/lib64/haswell/avx512_1/libcc1.so.0.0.0
-%exclude /usr/lib64/haswell/avx512_1/libgcc_s.so.1
-/usr/lib64/haswell/avx512_1/libgfortran.so.4
-/usr/lib64/haswell/avx512_1/libgfortran.so.4.0.0
-/usr/lib64/haswell/avx512_1/libgomp.so.1
-/usr/lib64/haswell/avx512_1/libgomp.so.1.0.0
-%exclude /usr/lib64/haswell/avx512_1/libmpx.so.2
-%exclude /usr/lib64/haswell/avx512_1/libmpx.so.2.0.1
-%exclude /usr/lib64/haswell/avx512_1/libmpxwrappers.so.2
-%exclude /usr/lib64/haswell/avx512_1/libmpxwrappers.so.2.0.1
-/usr/lib64/haswell/avx512_1/libquadmath.so.0
-/usr/lib64/haswell/avx512_1/libquadmath.so.0.0.0
-%exclude /usr/lib64/haswell/avx512_1/libssp.so.0
-%exclude /usr/lib64/haswell/avx512_1/libssp.so.0.0.0
