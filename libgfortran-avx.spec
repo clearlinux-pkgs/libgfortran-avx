@@ -12,7 +12,7 @@
 
 Name     : libgfortran-avx
 Version  : 7.1.0
-Release  : 16
+Release  : 17
 URL      : http://www.gnu.org/software/gcc/
 Source0  :  https://ftp.gnu.org/pub/gnu/gcc/gcc-7.1.0/gcc-7.1.0.tar.gz
 Source1  : ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-0.16.1.tar.bz2
@@ -207,76 +207,9 @@ make %{?_smp_mflags}
 
 popd
 
-rm -rf ../gcc-build-avx512
-mkdir ../gcc-build-avx512
-pushd ../gcc-build-avx512
-unset CFLAGS
-unset CXXFLAGS
-export CFLAGS="-march=ivybridge -g -O3 -fstack-protector -Wl,-z -Wl,now -Wl,-z -Wl,relro  -Wl,-z,max-page-size=0x1000"
-export CXXFLAGS="-march=ivybridge -g -O3  -Wl,-z,max-page-size=0x1000"
-export CFLAGS_FOR_TARGET="$CFLAGS -march=skylake-avx512 -ftree-vectorize -ftree-loop-vectorize -fno-semantic-interposition"
-export CXXFLAGS_FOR_TARGET="$CXXFLAGS -march=skylake-avx512 -ftree-vectorize -ftree-loop-vectorize -fno-semantic-interposition"
-export FFLAGS_FOR_TARGET="$FFLAGS -march=skylake-avx512 -ftree-vectorize -ftree-loop-vectorize -fno-semantic-interposition"
-
-export CPATH=/usr/include
-export LIBRARY_PATH=%{_libdir}
-
-../gcc-%{version}/configure \
-    --prefix=%{_prefix} \
-    --with-pkgversion='Clear Linux OS for Intel Architecture'\
-    --libdir=/usr/lib64 \
-    --enable-libstdcxx-pch\
-    --libexecdir=/usr/lib64 \
-    --with-system-zlib\
-    --enable-shared\
-    --enable-gnu-indirect-function \
-    --disable-vtable-verify \
-    --enable-threads=posix\
-    --enable-__cxa_atexit\
-    --enable-plugin\
-    --enable-ld=default\
-    --enable-clocale=gnu\
-    --disable-multiarch\
-    --disable-multilib\
-    --enable-lto\
-    --enable-linker-build-id \
-    --build=%{gcc_target}\
-    --target=%{gcc_target}\
-    --enable-languages="fortran" \
-    --with-ppl=yes \
-    --with-isl \
-    --includedir=%{_includedir} \
-    --with-gxx-include-dir=%{_includedir}/c++/ \
-    --exec-prefix=%{_prefix} \
-    --with-glibc-version=2.19 \
-    --with-system-libunwind \
-    --with-gnu-ld \
-    --with-tune=haswell \
-    --with-arch=haswell \
-    --disable-bootstrap \
-    --disable-libmpx
-
-make %{?_smp_mflags}
-
-popd
-
-
-
 %install
 export CPATH=%{_includedir}
 export LIBRARY_PATH=%{_libdir}
-pushd ../gcc-build-avx512
-%make_install
-popd
-rm -rf %{buildroot}/usr/share
-rm -rf %{buildroot}/usr/bin
-rm -rf %{buildroot}/usr/lib64/gcc/
-rm -rf %{buildroot}/usr/lib64/*.a
-rm -rf %{buildroot}/usr/lib64/*.so
-rm -rf %{buildroot}/usr/lib64/*.spec
-mkdir -p %{buildroot}/usr/lib64/haswell/avx512_1
-mv %{buildroot}/usr/lib64/*so*  %{buildroot}/usr/lib64/haswell/avx512_1
-rm -rf %{buildroot}/usr/lib64/*so*
 
 pushd ../gcc-build
 %make_install
