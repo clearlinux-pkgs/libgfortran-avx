@@ -12,7 +12,7 @@
 
 Name     : libgfortran-avx
 Version  : 7.1.0
-Release  : 18
+Release  : 19
 URL      : http://www.gnu.org/software/gcc/
 Source0  :  https://ftp.gnu.org/pub/gnu/gcc/gcc-7.1.0/gcc-7.1.0.tar.gz
 Source1  : ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-0.16.1.tar.bz2
@@ -46,6 +46,7 @@ BuildRequires : graphviz
 BuildRequires : gdb-dev
 
 Requires: libgfortran-compat-soname3
+Requires: glibc-lib-avx2
 
 Requires: gcc-libubsan
 
