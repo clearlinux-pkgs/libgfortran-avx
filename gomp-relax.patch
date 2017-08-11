@@ -15,9 +15,9 @@
 -    else
 -      cpu_relax ();
 +    else {
-+      for (j = mask; j; j--)
++      if (i > 16) for (j = mask; j; j--)
 +	      cpu_relax ();
-+      if (mask < 4)
++      if (mask < 4 && i > 16)
 +	mask = mask * 2;
 +    }
    return 1;
