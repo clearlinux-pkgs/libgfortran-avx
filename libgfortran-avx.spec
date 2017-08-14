@@ -11,10 +11,10 @@
 %define mtune haswell
 
 Name     : libgfortran-avx
-Version  : 7.1.0
+Version  : 7.2.0
 Release  : 21
 URL      : http://www.gnu.org/software/gcc/
-Source0  :  https://ftp.gnu.org/pub/gnu/gcc/gcc-7.1.0/gcc-7.1.0.tar.gz
+Source0  :  https://ftp.gnu.org/pub/gnu/gcc/gcc-7.2.0/gcc-7.2.0.tar.gz
 Source1  : ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-0.16.1.tar.bz2
 Summary  : AVX optinuzed libgfortran
 Group    : Development/Tools
@@ -146,7 +146,7 @@ GNU cc and gcc C compilers.
 %prep
 %setup -q -n gcc-%{version}
 %patch0 -p1
-%patch1 -p1
+#%patch1 -p1
 %patch2 -p1
 %patch3 -p1
 
