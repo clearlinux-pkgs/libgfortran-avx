@@ -12,7 +12,7 @@
 
 Name     : libgfortran-avx
 Version  : 7.2.0
-Release  : 22
+Release  : 23
 URL      : http://www.gnu.org/software/gcc/
 Source0  :  https://ftp.gnu.org/pub/gnu/gcc/gcc-7.2.0/gcc-7.2.0.tar.gz
 Source1  : ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-0.16.1.tar.bz2
@@ -227,9 +227,9 @@ mv %{buildroot}/usr/lib64/*so*  %{buildroot}/usr/lib64/haswell/
 %files
 %exclude /usr/lib64/haswell/libatomic.so.1
 %exclude /usr/lib64/haswell/libatomic.so.1.2.0
-%exclude /usr/lib64/haswell/libcc1.so.0
-%exclude /usr/lib64/haswell/libcc1.so.0.0.0
-%exclude /usr/lib64/haswell/libgcc_s.so.1
+#/usr/lib64/haswell/libcc1.so.0
+#/usr/lib64/haswell/libcc1.so.0.0.0
+/usr/lib64/haswell/libgcc_s.so.1
 /usr/lib64/haswell/libgfortran.so.4
 /usr/lib64/haswell/libgfortran.so.4.0.0
 /usr/lib64/haswell/libgomp.so.1
