@@ -12,7 +12,7 @@
 
 Name     : libgfortran-avx
 Version  : 7.2.0
-Release  : 24
+Release  : 25
 URL      : http://www.gnu.org/software/gcc/
 Source0  :  https://ftp.gnu.org/pub/gnu/gcc/gcc-7.2.0/gcc-7.2.0.tar.gz
 Source1  : ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-0.16.1.tar.bz2
@@ -190,7 +190,7 @@ export LIBRARY_PATH=%{_libdir}
     --enable-linker-build-id \
     --build=%{gcc_target}\
     --target=%{gcc_target}\
-    --enable-languages="fortran" \
+    --enable-languages="c,c++,fortran" \
     --with-ppl=yes \
     --with-isl \
     --includedir=%{_includedir} \
@@ -236,6 +236,26 @@ mv %{buildroot}/usr/lib64/*so*  %{buildroot}/usr/lib64/haswell/
 /usr/lib64/haswell/libgomp.so.1.0.0
 /usr/lib64/haswell/libquadmath.so.0
 /usr/lib64/haswell/libquadmath.so.0.0.0
+/usr/lib64/haswell/libstdc++.so.6
+/usr/lib64/haswell/libstdc++.so.6.0.24
 %exclude /usr/lib64/haswell/libssp.so.0
 %exclude /usr/lib64/haswell/libssp.so.0.0.0
+%exclude /usr/include
+%exclude /usr/lib64/haswell/libasan.so.4
+%exclude /usr/lib64/haswell/libasan.so.4.0.0
+%exclude /usr/lib64/haswell/libcilkrts.so.5
+%exclude /usr/lib64/haswell/libcilkrts.so.5.0.0
+%exclude /usr/lib64/haswell/libitm.so.1
+%exclude /usr/lib64/haswell/libitm.so.1.0.0
+%exclude /usr/lib64/haswell/liblsan.so.0
+%exclude /usr/lib64/haswell/liblsan.so.0.0.0
+%exclude /usr/lib64/haswell/libstdc++.so.6.0.24-gdb.py
+%exclude /usr/lib64/haswell/libstdc++.so.6.0.24-gdb.pyc
+%exclude /usr/lib64/haswell/libstdc++.so.6.0.24-gdb.pyo
+%exclude /usr/lib64/haswell/libtsan.so.0
+%exclude /usr/lib64/haswell/libtsan.so.0.0.0
+%exclude /usr/lib64/haswell/libubsan.so.0
+%exclude /usr/lib64/haswell/libubsan.so.0.0.0
+%exclude /usr/lib64/libasan_preinit.o
+%exclude /usr/lib64/libtsan_preinit.o
 
