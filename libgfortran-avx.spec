@@ -45,7 +45,6 @@ BuildRequires : libxslt
 BuildRequires : graphviz
 BuildRequires : gdb-dev
 
-Requires: libgfortran-compat-soname3
 Requires: glibc-lib-avx2
 Requires: gcc-libs-math
 
