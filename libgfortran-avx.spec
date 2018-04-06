@@ -12,7 +12,7 @@
 
 Name     : libgfortran-avx
 Version  : 7.3.0
-Release  : 33
+Release  : 34
 URL      : http://www.gnu.org/software/gcc/
 Source0  : https://ftp.gnu.org/pub/gnu/gcc/gcc-7.3.0/gcc-7.3.0.tar.gz
 Source1  : ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-0.16.1.tar.bz2
@@ -23,6 +23,7 @@ Patch0   : 0001-Fix-stack-protection-issues.patch
 Patch1   : gcc-stable-branch.patch
 Patch2   : openmp-vectorize.patch
 Patch3   : gomp-relax.patch
+Patch4   : narrow-vpxor.patch
 
 BuildRequires : bison
 BuildRequires : flex
@@ -72,6 +73,7 @@ GNU cc and gcc C compilers.
 #%patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 
