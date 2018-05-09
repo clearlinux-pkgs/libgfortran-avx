@@ -242,7 +242,7 @@ mv %{buildroot}/usr/lib64/*so*  %{buildroot}/usr/lib64/haswell/
 /usr/lib64/haswell/avx512_1/libquadmath.so.0.0.0
 %exclude    /usr/lib64/haswell/avx512_1/libtsan.so.0
 %exclude    /usr/lib64/haswell/avx512_1/libtsan.so.0.0.0
-/usr/lib64/haswell/avx512_1/libasan.so.5
+%exclude    /usr/lib64/haswell/avx512_1/libasan.so.5
 %exclude    /usr/lib64/haswell/avx512_1/libasan.so.5.0.0
    /usr/lib64/haswell/avx512_1/libstdc++.so.6
    /usr/lib64/haswell/avx512_1/libstdc++.so.6.0.25
