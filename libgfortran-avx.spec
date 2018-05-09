@@ -11,10 +11,10 @@
 %define mtune haswell
 
 Name     : libgfortran-avx
-Version  : 7.3.0
+Version  : 8.1.0
 Release  : 34
 URL      : http://www.gnu.org/software/gcc/
-Source0  : https://ftp.gnu.org/pub/gnu/gcc/gcc-7.3.0/gcc-7.3.0.tar.gz
+Source0  : https://ftp.gnu.org/pub/gnu/gcc/gcc-8.1.0/gcc-8.1.0.tar.gz
 Source1  : ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-0.16.1.tar.bz2
 Summary  : AVX optinuzed libgfortran
 Group    : Development/Tools
@@ -23,7 +23,6 @@ Patch0   : 0001-Fix-stack-protection-issues.patch
 Patch1   : gcc-stable-branch.patch
 Patch2   : openmp-vectorize.patch
 Patch3   : gomp-relax.patch
-Patch4   : narrow-vpxor.patch
 
 BuildRequires : bison
 BuildRequires : flex
@@ -70,10 +69,8 @@ GNU cc and gcc C compilers.
 %prep
 %setup -q -n gcc-%{version}
 %patch0 -p1
-#%patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
 
 %build
 
@@ -217,54 +214,44 @@ mkdir -p %{buildroot}/usr/lib64/haswell
 mv %{buildroot}/usr/lib64/*so*  %{buildroot}/usr/lib64/haswell/
 
 %files
-%exclude /usr/lib64/haswell/libatomic.so.1
-%exclude /usr/lib64/haswell/libatomic.so.1.2.0
-%exclude /usr/lib64/haswell/libcc1.so.0
-%exclude /usr/lib64/haswell/libcc1.so.0.0.0
 /usr/lib64/haswell/libgcc_s.so.1
-/usr/lib64/haswell/libgfortran.so.4
-/usr/lib64/haswell/libgfortran.so.4.0.0
+/usr/lib64/haswell/libgfortran.so.5
+/usr/lib64/haswell/libgfortran.so.5.0.0
 /usr/lib64/haswell/libgomp.so.1
 /usr/lib64/haswell/libgomp.so.1.0.0
 /usr/lib64/haswell/libquadmath.so.0
 /usr/lib64/haswell/libquadmath.so.0.0.0
-/usr/lib64/haswell/libstdc++.so.6
-/usr/lib64/haswell/libstdc++.so.6.0.24
-%exclude /usr/lib64/haswell/libssp.so.0
-%exclude /usr/lib64/haswell/libssp.so.0.0.0
 %exclude /usr/include
-%exclude /usr/lib64/haswell/libasan.so.4
-%exclude /usr/lib64/haswell/libasan.so.4.0.0
-%exclude /usr/lib64/haswell/libcilkrts.so.5
-%exclude /usr/lib64/haswell/libcilkrts.so.5.0.0
 %exclude /usr/lib64/haswell/libitm.so.1
 %exclude /usr/lib64/haswell/libitm.so.1.0.0
 %exclude /usr/lib64/haswell/liblsan.so.0
 %exclude /usr/lib64/haswell/liblsan.so.0.0.0
-%exclude /usr/lib64/haswell/libstdc++.so.6.0.24-gdb.py
-%exclude /usr/lib64/haswell/libstdc++.so.6.0.24-gdb.pyc
-%exclude /usr/lib64/haswell/libstdc++.so.6.0.24-gdb.pyo
 %exclude /usr/lib64/haswell/libtsan.so.0
 %exclude /usr/lib64/haswell/libtsan.so.0.0.0
-%exclude /usr/lib64/haswell/libubsan.so.0
-%exclude /usr/lib64/haswell/libubsan.so.0.0.0
 %exclude /usr/lib64/libasan_preinit.o
 %exclude /usr/lib64/libtsan_preinit.o
 
-%exclude /usr/lib64/haswell/avx512_1/libasan.so.4
-%exclude    /usr/lib64/haswell/avx512_1/libasan.so.4.0.0
 %exclude    /usr/lib64/haswell/avx512_1/libgcc_s.so.1
-/usr/lib64/haswell/avx512_1/libgfortran.so.4
-/usr/lib64/haswell/avx512_1/libgfortran.so.4.0.0
+/usr/lib64/haswell/avx512_1/libgfortran.so.5
+/usr/lib64/haswell/avx512_1/libgfortran.so.5.0.0
 %exclude    /usr/lib64/haswell/avx512_1/libgomp.so.1
 %exclude    /usr/lib64/haswell/avx512_1/libgomp.so.1.0.0
 %exclude    /usr/lib64/haswell/avx512_1/liblsan.so.0
 %exclude    /usr/lib64/haswell/avx512_1/liblsan.so.0.0.0
 /usr/lib64/haswell/avx512_1/libquadmath.so.0
 /usr/lib64/haswell/avx512_1/libquadmath.so.0.0.0
-%exclude    /usr/lib64/haswell/avx512_1/libstdc++.so.6
-%exclude    /usr/lib64/haswell/avx512_1/libstdc++.so.6.0.24
 %exclude    /usr/lib64/haswell/avx512_1/libtsan.so.0
 %exclude    /usr/lib64/haswell/avx512_1/libtsan.so.0.0.0
-%exclude    /usr/lib64/haswell/avx512_1/libubsan.so.0
-%exclude    /usr/lib64/haswell/avx512_1/libubsan.so.0.0.0
+/usr/lib64/haswell/avx512_1/libasan.so.5
+%exclude    /usr/lib64/haswell/avx512_1/libasan.so.5.0.0
+   /usr/lib64/haswell/avx512_1/libstdc++.so.6
+   /usr/lib64/haswell/avx512_1/libstdc++.so.6.0.25
+%exclude    /usr/lib64/haswell/avx512_1/libubsan.so.1
+%exclude    /usr/lib64/haswell/avx512_1/libubsan.so.1.0.0
+%exclude    /usr/lib64/haswell/libasan.so.5
+%exclude    /usr/lib64/haswell/libasan.so.5.0.0
+   /usr/lib64/haswell/libstdc++.so.6
+   /usr/lib64/haswell/libstdc++.so.6.0.25
+%exclude    /usr/lib64/haswell/libubsan.so.1
+%exclude    /usr/lib64/haswell/libubsan.so.1.0.0
+%exclude    /usr/lib64/liblsan_preinit.o
