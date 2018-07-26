@@ -11,10 +11,10 @@
 %define mtune haswell
 
 Name     : libgfortran-avx
-Version  : 8.1.0
+Version  : 8.2.0
 Release  : 38
 URL      : http://www.gnu.org/software/gcc/
-Source0  : https://ftp.gnu.org/pub/gnu/gcc/gcc-8.1.0/gcc-8.1.0.tar.gz
+Source0  : https://ftp.gnu.org/pub/gnu/gcc/gcc-8.2.0/gcc-8.2.0.tar.gz
 Source1  : ftp://gcc.gnu.org/pub/gcc/infrastructure/isl-0.16.1.tar.bz2
 Summary  : AVX optinuzed libgfortran
 Group    : Development/Tools
@@ -214,7 +214,7 @@ mkdir -p %{buildroot}/usr/lib64/haswell
 mv %{buildroot}/usr/lib64/*so*  %{buildroot}/usr/lib64/haswell/
 
 %files
-/usr/lib64/haswell/libgcc_s.so.1
+%exclude /usr/lib64/haswell/libgcc_s.so.1
 /usr/lib64/haswell/libgfortran.so.5
 /usr/lib64/haswell/libgfortran.so.5.0.0
 /usr/lib64/haswell/libgomp.so.1
