@@ -47,8 +47,6 @@ BuildRequires : gdb-dev
 
 Requires: glibc-lib-avx2
 Requires: gcc-libs-math
-
-Requires: gcc-libubsan
 Requires: libstdc++
 
 Provides:       gcc-symlinks
