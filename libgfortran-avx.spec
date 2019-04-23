@@ -11,10 +11,10 @@
 %define mtune haswell
 
 Name     : libgfortran-avx
-Version  : 8.3.0
+Version  : 9
 Release  : 40
 URL      : http://www.gnu.org/software/gcc/
-Source0  : https://mirrors.kernel.org/gnu/gcc/gcc-8.3.0/gcc-8.3.0.tar.gz
+Source0  : https://gcc.gnu.org/pub/gcc/snapshots/9-20190421/gcc-9-20190421.tar.xz
 Source1  : https://gcc.gnu.org/pub/gcc/infrastructure/isl-0.16.1.tar.bz2
 Summary  : AVX optinuzed libgfortran
 Group    : Development/Tools
@@ -65,7 +65,7 @@ GNU cc and gcc C compilers.
 
 
 %prep
-%setup -q -n gcc-%{version}
+%setup -q -n gcc-%{version}-20190421
 %patch0 -p1
 %patch2 -p1
 %patch3 -p1
@@ -89,7 +89,7 @@ export FFLAGS_FOR_TARGET="$FFLAGS -march=haswell -mtune=skylake -fno-semantic-in
 export CPATH=/usr/include
 export LIBRARY_PATH=%{_libdir}
 
-../gcc-%{version}/configure \
+../gcc-%{version}-20190421/configure \
     --prefix=%{_prefix} \
     --with-pkgversion='Clear Linux OS for Intel Architecture'\
     --libdir=/usr/lib64 \
@@ -122,7 +122,10 @@ export LIBRARY_PATH=%{_libdir}
     --with-tune=haswell \
     --with-arch=haswell \
     --disable-bootstrap \
-    --disable-libmpx
+    --enable-cet \
+    --disable-libmpx \
+    --with-gcc-major-version-only \
+    --enable-default-pie
 
 make %{?_smp_mflags}
 
@@ -143,7 +146,7 @@ export FFLAGS_FOR_TARGET="$FFLAGS -march=skylake-avx512 -mtune=skylake -fno-sema
 export CPATH=/usr/include
 export LIBRARY_PATH=%{_libdir}
 
-../gcc-%{version}/configure \
+../gcc-%{version}-20190421/configure \
     --prefix=%{_prefix} \
     --with-pkgversion='Clear Linux OS for Intel Architecture'\
     --libdir=/usr/lib64 \
@@ -173,10 +176,13 @@ export LIBRARY_PATH=%{_libdir}
     --with-glibc-version=2.19 \
     --with-system-libunwind \
     --with-gnu-ld \
-    --with-tune=haswell \
-    --with-arch=haswell \
+    --with-tune=skylake-avx512 \
+    --with-arch=skylake-avx512 \
     --disable-bootstrap \
-    --disable-libmpx
+    --enable-cet \
+    --disable-libmpx \
+    --with-gcc-major-version-only \
+    --enable-default-pie
 
 make %{?_smp_mflags}
 
@@ -243,13 +249,13 @@ mv %{buildroot}/usr/lib64/*so*  %{buildroot}/usr/lib64/haswell/
 %exclude    /usr/lib64/haswell/avx512_1/libasan.so.5
 %exclude    /usr/lib64/haswell/avx512_1/libasan.so.5.0.0
    /usr/lib64/haswell/avx512_1/libstdc++.so.6
-   /usr/lib64/haswell/avx512_1/libstdc++.so.6.0.25
+   /usr/lib64/haswell/avx512_1/libstdc++.so.6.0.26
 %exclude    /usr/lib64/haswell/avx512_1/libubsan.so.1
 %exclude    /usr/lib64/haswell/avx512_1/libubsan.so.1.0.0
 %exclude    /usr/lib64/haswell/libasan.so.5
 %exclude    /usr/lib64/haswell/libasan.so.5.0.0
    /usr/lib64/haswell/libstdc++.so.6
-   /usr/lib64/haswell/libstdc++.so.6.0.25
+   /usr/lib64/haswell/libstdc++.so.6.0.26
 %exclude    /usr/lib64/haswell/libubsan.so.1
 %exclude    /usr/lib64/haswell/libubsan.so.1.0.0
 %exclude    /usr/lib64/liblsan_preinit.o
