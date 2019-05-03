@@ -11,10 +11,10 @@
 %define mtune haswell
 
 Name     : libgfortran-avx
-Version  : 9
+Version  : 9.1.0
 Release  : 41
 URL      : http://www.gnu.org/software/gcc/
-Source0  : https://gcc.gnu.org/pub/gcc/snapshots/9-20190421/gcc-9-20190421.tar.xz
+Source0  :  https://gcc.gnu.org/pub/gcc/releases/gcc-9.1.0/gcc-9.1.0.tar.xz
 Source1  : https://gcc.gnu.org/pub/gcc/infrastructure/isl-0.16.1.tar.bz2
 Summary  : AVX optinuzed libgfortran
 Group    : Development/Tools
@@ -65,7 +65,7 @@ GNU cc and gcc C compilers.
 
 
 %prep
-%setup -q -n gcc-%{version}-20190421
+%setup -q -n gcc-%{version}
 %patch0 -p1
 %patch2 -p1
 %patch3 -p1
@@ -89,7 +89,7 @@ export FFLAGS_FOR_TARGET="$FFLAGS -march=haswell -mtune=skylake -fno-semantic-in
 export CPATH=/usr/include
 export LIBRARY_PATH=%{_libdir}
 
-../gcc-%{version}-20190421/configure \
+../gcc-%{version}/configure \
     --prefix=%{_prefix} \
     --with-pkgversion='Clear Linux OS for Intel Architecture'\
     --libdir=/usr/lib64 \
@@ -146,7 +146,7 @@ export FFLAGS_FOR_TARGET="$FFLAGS -march=skylake-avx512 -mtune=skylake -fno-sema
 export CPATH=/usr/include
 export LIBRARY_PATH=%{_libdir}
 
-../gcc-%{version}-20190421/configure \
+../gcc-%{version}/configure \
     --prefix=%{_prefix} \
     --with-pkgversion='Clear Linux OS for Intel Architecture'\
     --libdir=/usr/lib64 \
