@@ -249,13 +249,13 @@ mv %{buildroot}/usr/lib64/*so*  %{buildroot}/usr/lib64/haswell/
 %exclude    /usr/lib64/haswell/avx512_1/libasan.so.5
 %exclude    /usr/lib64/haswell/avx512_1/libasan.so.5.0.0
    /usr/lib64/haswell/avx512_1/libstdc++.so.6
-   /usr/lib64/haswell/avx512_1/libstdc++.so.6.0.26
+   /usr/lib64/haswell/avx512_1/libstdc++.so.6.0.*
 %exclude    /usr/lib64/haswell/avx512_1/libubsan.so.1
 %exclude    /usr/lib64/haswell/avx512_1/libubsan.so.1.0.0
 %exclude    /usr/lib64/haswell/libasan.so.5
 %exclude    /usr/lib64/haswell/libasan.so.5.0.0
    /usr/lib64/haswell/libstdc++.so.6
-   /usr/lib64/haswell/libstdc++.so.6.0.26
+   /usr/lib64/haswell/libstdc++.so.6.0.*
 %exclude    /usr/lib64/haswell/libubsan.so.1
 %exclude    /usr/lib64/haswell/libubsan.so.1.0.0
 %exclude    /usr/lib64/liblsan_preinit.o
