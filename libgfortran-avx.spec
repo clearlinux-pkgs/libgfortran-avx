@@ -23,6 +23,7 @@ Patch0   : 0001-Fix-stack-protection-issues.patch
 Patch1   : gcc-stable-branch.patch
 Patch2   : openmp-vectorize.patch
 Patch3   : gomp-relax.patch
+Patch4   : fixup-9-branch.patch
 
 BuildRequires : bison
 BuildRequires : flex
@@ -66,9 +67,12 @@ GNU cc and gcc C compilers.
 
 %prep
 %setup -q -n gcc-%{version}
+%patch4 -p1
 %patch0 -p1
+%patch1 -p1
 %patch2 -p1
 %patch3 -p1
+
 
 %build
 
