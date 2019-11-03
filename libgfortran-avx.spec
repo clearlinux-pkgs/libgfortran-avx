@@ -12,7 +12,7 @@
 
 Name     : libgfortran-avx
 Version  : 9.2.0
-Release  : 46
+Release  : 47
 URL      : http://www.gnu.org/software/gcc/
 Source0  : https://gcc.gnu.org/pub/gcc/releases/gcc-9.2.0/gcc-9.2.0.tar.xz
 Source1  : https://gcc.gnu.org/pub/gcc/infrastructure/isl-0.16.1.tar.bz2
