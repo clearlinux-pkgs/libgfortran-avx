@@ -43,7 +43,7 @@ Dragan Mladjenovic (4):
 Edward Smith-Rowland (1):
       Update docs for p858 - Constexpr iterator changes available since 9.1.
 
-Eric Botcazou (18):
+Eric Botcazou (19):
       re PR rtl-optimization/91347 (hppa: wrong code generated with tail call optimisation)
       re PR target/91472 (gmp testsuite segfaults with gcc-8 and gcc-9, works fine with gcc-7)
       re PR rtl-optimization/89795 (wrong code with -O2 -fno-dce -fno-forward-propagate -fno-sched-pressure)
@@ -62,11 +62,16 @@ Eric Botcazou (18):
       tree.c (build_array_type_1): Add SET_CANONICAL parameter and compute TYPE_CANONICAL from the element type...
       Fix problematic TLS sequences for the Solaris linker
       Fix link failure with debug info in LTO mode
+      Fix internal error on locally-defined subpools
 
 Eric S. Raymond (1):
       Clean up references to Subversion in documentation sources.
 
-GCC Administrator (206):
+GCC Administrator (210):
+      Daily bump.
+      Daily bump.
+      Daily bump.
+      Daily bump.
       Daily bump.
       Daily bump.
       Daily bump.
@@ -876,6 +881,9 @@ Will Schmidt (2):
 
 Xiong Hu Luo (1):
       backport: Enable math functions linking with static library for LTO
+
+Xionghu Luo (1):
+      Backport to gcc-9: PR92398: Fix testcase failure of pr72804.c
 
 liuhongt (3):
       Intrinsic macro of vpshr* and vpshl* lack a closing parenthesis which would cause failure in O0.
@@ -3664,10 +3672,15 @@ index 5f43d9de00e..abae872cd63 100644
  	  echo You must configure gcc.  Look at http://gcc.gnu.org/install/ for details.; \
  	  false; \
 diff --git a/gcc/ada/ChangeLog b/gcc/ada/ChangeLog
-index 22cd00956dc..5464c6b3d68 100644
+index 22cd00956dc..d5cb3fb1f6f 100644
 --- a/gcc/ada/ChangeLog
 +++ b/gcc/ada/ChangeLog
-@@ -1,3 +1,57 @@
+@@ -1,3 +1,62 @@
++2020-03-11  Richard Wai  <richard@annexi-strayline.com>
++
++	* gcc-interface/decl.c (gnat_to_gnu_entity): Also test Is_Public on
++	the Alias of the entitiy, if it is present, in the main assertion.
++
 +2019-11-29  Eric Botcazou  <ebotcazou@adacore.com>
 +
 +	PR ada/92489
@@ -3764,10 +3777,36 @@ index 76fce788fc9..d4ffae21913 100644
  		      }
  
 diff --git a/gcc/ada/gcc-interface/decl.c b/gcc/ada/gcc-interface/decl.c
-index 4e73df0d7f0..a724ba693fd 100644
+index 4e73df0d7f0..8118d119bab 100644
 --- a/gcc/ada/gcc-interface/decl.c
 +++ b/gcc/ada/gcc-interface/decl.c
-@@ -8255,9 +8255,8 @@ annotate_value (tree gnu_size)
+@@ -445,15 +445,22 @@ gnat_to_gnu_entity (Entity_Id gnat_entity, tree gnu_expr, bool definition)
+ 
+   /* If we get here, it means we have not yet done anything with this entity.
+      If we are not defining it, it must be a type or an entity that is defined
+-     elsewhere or externally, otherwise we should have defined it already.  */
++     elsewhere or externally, otherwise we should have defined it already.
++
++     One exception is for an entity, typically an inherited operation, which is
++     a local alias for the parent's operation.  It is neither defined, since it
++     is an inherited operation, nor public, since it is declared in the current
++     compilation unit, so we test Is_Public on the Alias entity instead.  */
+   gcc_assert (definition
+-	      || type_annotate_only
+ 	      || is_type
+ 	      || kind == E_Discriminant
+ 	      || kind == E_Component
+ 	      || kind == E_Label
+ 	      || (kind == E_Constant && Present (Full_View (gnat_entity)))
+-	      || Is_Public (gnat_entity));
++	      || Is_Public (gnat_entity)
++	      || (Present (Alias (gnat_entity))
++		  && Is_Public (Alias (gnat_entity)))
++	      || type_annotate_only);
+ 
+   /* Get the name of the entity and set up the line number and filename of
+      the original definition for use in any decl we make.  Make sure we do
+@@ -8255,9 +8262,8 @@ annotate_value (tree gnu_size)
      {
      case INTEGER_CST:
        /* For negative values, build NEGATE_EXPR of the opposite.  Such values
@@ -3779,7 +3818,7 @@ index 4e73df0d7f0..a724ba693fd 100644
  	{
  	  tree t = wide_int_to_tree (sizetype, -wi::to_wide (gnu_size));
  	  tcode = Negate_Expr;
-@@ -8335,9 +8334,8 @@ annotate_value (tree gnu_size)
+@@ -8335,9 +8341,8 @@ annotate_value (tree gnu_size)
  	  && tree_int_cst_sign_bit (TREE_OPERAND (gnu_size, 1)))
  	{
  	  tcode = Minus_Expr;
@@ -3791,7 +3830,7 @@ index 4e73df0d7f0..a724ba693fd 100644
  	  break;
  	}
  
-@@ -8378,9 +8376,9 @@ annotate_value (tree gnu_size)
+@@ -8378,9 +8383,9 @@ annotate_value (tree gnu_size)
  	 Such values can appear in expressions with aligning patterns.  */
        if (TREE_CODE (TREE_OPERAND (gnu_size, 1)) == INTEGER_CST)
  	{
@@ -28375,10 +28414,29 @@ index 29f6cdc4667..9a6a1eadd2d 100644
    /* We have real symbol that should be in symbol table.  However try to trim
       down the refernces to libraries bit more because linker will otherwise
 diff --git a/gcc/testsuite/ChangeLog b/gcc/testsuite/ChangeLog
-index bc11ae4ae0b..cb0d46f50c0 100644
+index bc11ae4ae0b..3a01188a810 100644
 --- a/gcc/testsuite/ChangeLog
 +++ b/gcc/testsuite/ChangeLog
-@@ -1,3 +1,1765 @@
+@@ -1,3 +1,1784 @@
++2020-03-11  Richard Wai  <richard@annexi-strayline.com>
++
++	* gnat.dg/subpools1.adb: New test.
++
++2020-03-10  Luo Xiong Hu  <luoxhu@linux.ibm.com>
++
++	backport from master.
++	PR testsuite/94036
++
++	2019-12-02  Luo Xiong Hu  <luoxhu@linux.ibm.com>
++
++	PR testsuite/92398
++	* gcc.target/powerpc/pr72804.c: Split the store function to...
++	* gcc.target/powerpc/pr92398.h: ... this one.  New.
++	* gcc.target/powerpc/pr92398.p9+.c: New.
++	* gcc.target/powerpc/pr92398.p9-.c: New.
++	* lib/target-supports.exp (check_effective_target_p8): New.
++	(check_effective_target_p9+): New.
++
 +2020-03-05  Jakub Jelinek  <jakub@redhat.com>
 +
 +	PR target/94046
@@ -30144,7 +30202,7 @@ index bc11ae4ae0b..cb0d46f50c0 100644
  2019-08-12  Release Manager
  
  	* GCC 9.2.0 released.
-@@ -427,7 +2189,7 @@
+@@ -427,7 +2208,7 @@
  	Backport from mainline.
  	2019-05-15  Iain Sandoe  <iain@sandoe.co.uk>
  
@@ -30153,7 +30211,7 @@ index bc11ae4ae0b..cb0d46f50c0 100644
  	(check_effective_target_powerpc_p8vector_ok): No support for Darwin.
  	(check_effective_target_powerpc_p9vector_ok): Likewise.
  	(check_effective_target_powerpc_float128_sw_ok): Likewise.
-@@ -720,7 +2482,7 @@
+@@ -720,7 +2501,7 @@
  
  	Backport from mainline
  	PR fortran/91077
@@ -30162,7 +30220,7 @@ index bc11ae4ae0b..cb0d46f50c0 100644
  
  2019-07-05  Szabolcs Nagy  <szabolcs.nagy@arm.com>
  
-@@ -803,7 +2565,7 @@
+@@ -803,7 +2584,7 @@
  	Backport fom mainline
  	2019-06-21  Jeff Law  <law@redhat.com>
  
@@ -30171,7 +30229,7 @@ index bc11ae4ae0b..cb0d46f50c0 100644
  	* gcc.c-torture/execute/pr90949.c: New test.
  
  2019-06-26  Martin Jambor  <mjambor@suse.cz>
-@@ -969,7 +2731,7 @@
+@@ -969,7 +2750,7 @@
         * gcc.target/i386/pr82699-6.c: Likewise
         * gcc.target/i386/returninst1.c: Likewise
         * gcc.target/i386/returninst2.c: Likewise
@@ -30180,7 +30238,7 @@ index bc11ae4ae0b..cb0d46f50c0 100644
  
  2019-05-30  Iain Sandoe  <iain@sandoe.co.uk>
  
-@@ -1131,7 +2893,7 @@
+@@ -1131,7 +2912,7 @@
  
  	Backport from trunk
  	PR fortran/90498
@@ -30189,7 +30247,7 @@ index bc11ae4ae0b..cb0d46f50c0 100644
  
  2019-05-17  Jakub Jelinek  <jakub@redhat.com>
  
-@@ -3801,21 +5563,21 @@
+@@ -3801,21 +5582,21 @@
  2019-02-23  Paul Thomas  <pault@gcc.gnu.org>
  
  	PR fortran/88117
@@ -30218,7 +30276,7 @@ index bc11ae4ae0b..cb0d46f50c0 100644
  
  2019-02-22  David Malcolm  <dmalcolm@redhat.com>
  
-@@ -4444,7 +6206,7 @@
+@@ -4444,7 +6225,7 @@
  2019-02-09  Paul Thomas  <pault@gcc.gnu.org>
  
  	PR fortran/89200
@@ -30227,7 +30285,7 @@ index bc11ae4ae0b..cb0d46f50c0 100644
  
  2019-02-09  Jakub Jelinek  <jakub@redhat.com>
  
-@@ -4704,17 +6466,17 @@
+@@ -4704,17 +6485,17 @@
  2019-02-02  Paul Thomas  <pault@gcc.gnu.org>
  
  	PR fortran/88393
@@ -39970,6 +40028,31 @@ index 00000000000..679034fae43
 +{
 +  return vadd_no_vsx (x, y) - z;
 +}
+diff --git a/gcc/testsuite/gcc.target/powerpc/pr72804.c b/gcc/testsuite/gcc.target/powerpc/pr72804.c
+index b83b6350d75..c0711499ae5 100644
+--- a/gcc/testsuite/gcc.target/powerpc/pr72804.c
++++ b/gcc/testsuite/gcc.target/powerpc/pr72804.c
+@@ -9,17 +9,7 @@ foo (__int128_t *src)
+   return ~*src;
+ }
+ 
+-void
+-bar (__int128_t *dst, __int128_t src)
+-{
+-  *dst =  ~src;
+-}
+ 
+-/* { dg-final { scan-assembler-times "not " 4 } } */
+-/* { dg-final { scan-assembler-times "std " 2 } } */
+-/* { dg-final { scan-assembler-times "ld " 2 } } */
+-/* { dg-final { scan-assembler-not "lxvd2x" } } */
+-/* { dg-final { scan-assembler-not "stxvd2x" } } */
+-/* { dg-final { scan-assembler-not "xxpermdi" } } */
+-/* { dg-final { scan-assembler-not "mfvsrd" } } */
+-/* { dg-final { scan-assembler-not "mfvsrd" } } */
++/* { dg-final { scan-assembler-times {\mld\M} 2 } } */
++/* { dg-final { scan-assembler-times {\mnot\M} 2 } } */
++/* { dg-final { scan-assembler-not {\mlxvd2x\M} } } */
 diff --git a/gcc/testsuite/gcc.target/powerpc/pr91275.c b/gcc/testsuite/gcc.target/powerpc/pr91275.c
 new file mode 100644
 index 00000000000..cd461158af7
@@ -40366,6 +40449,63 @@ index 00000000000..372c7af14a9
 +}
 +
 +/* { dg-final { scan-tree-dump-times "LOOP VECTORIZED" 6 "vect" } } */
+diff --git a/gcc/testsuite/gcc.target/powerpc/pr92398.h b/gcc/testsuite/gcc.target/powerpc/pr92398.h
+new file mode 100644
+index 00000000000..5a4a8bcab80
+--- /dev/null
++++ b/gcc/testsuite/gcc.target/powerpc/pr92398.h
+@@ -0,0 +1,17 @@
++/* This test code is included into pr92398.p9-.c and pr92398.p9+.c.
++   The two files have the tests for the number of instructions generated for
++   P9- versus P9+.
++
++   store generates difference instructions as below:
++   P9+: mtvsrdd;xxlnot;stxv.
++   P8/P7/P6 LE: not;not;std;std.
++   P8 BE: mtvsrd;mtvsrd;xxpermdi;xxlnor;stxvd2x.
++   P7/P6 BE: std;std;addi;lxvd2x;xxlnor;stxvd2x.
++   P9+ and P9- LE are expected, P6/P7/P8 BE are unexpected.  */
++
++void
++bar (__int128_t *dst, __int128_t src)
++{
++  *dst =  ~src;
++}
++
+diff --git a/gcc/testsuite/gcc.target/powerpc/pr92398.p9+.c b/gcc/testsuite/gcc.target/powerpc/pr92398.p9+.c
+new file mode 100644
+index 00000000000..a819c3f16af
+--- /dev/null
++++ b/gcc/testsuite/gcc.target/powerpc/pr92398.p9+.c
+@@ -0,0 +1,12 @@
++/* { dg-do compile { target { lp64 && p9+ } } } */
++/* { dg-require-effective-target powerpc_vsx_ok } */
++/* { dg-options "-O2 -mvsx" } */
++
++/* { dg-final { scan-assembler-times {\mmtvsrdd\M} 1 } } */
++/* { dg-final { scan-assembler-times {\mxxlnor\M} 1 } } */
++/* { dg-final { scan-assembler-times {\mstxv\M} 1 } } */
++/* { dg-final { scan-assembler-not {\mld\M} } } */
++/* { dg-final { scan-assembler-not {\mnot\M} } } */
++
++/* Source code for the test in pr92398.h */
++#include "pr92398.h"
+diff --git a/gcc/testsuite/gcc.target/powerpc/pr92398.p9-.c b/gcc/testsuite/gcc.target/powerpc/pr92398.p9-.c
+new file mode 100644
+index 00000000000..065ae73f267
+--- /dev/null
++++ b/gcc/testsuite/gcc.target/powerpc/pr92398.p9-.c
+@@ -0,0 +1,10 @@
++/* { dg-do compile { target { lp64 && {! p9+} } } } */
++/* { dg-require-effective-target powerpc_vsx_ok } */
++/* { dg-options "-O2 -mvsx" } */
++
++/* { dg-final { scan-assembler-times {\mnot\M} 2 { xfail be } } } */
++/* { dg-final { scan-assembler-times {\mstd\M} 2 { xfail { p8 && be } } } } */
++
++/* Source code for the test in pr92398.h */
++#include "pr92398.h"
++
 diff --git a/gcc/testsuite/gcc.target/powerpc/pr93073.c b/gcc/testsuite/gcc.target/powerpc/pr93073.c
 new file mode 100644
 index 00000000000..6a0a4731148
@@ -43931,6 +44071,125 @@ index a6bdade304b..154a7aff190 100644
  
  with GNAT.Sockets; use GNAT.Sockets;
  procedure socket1 is
+diff --git a/gcc/testsuite/gnat.dg/subpools1.adb b/gcc/testsuite/gnat.dg/subpools1.adb
+new file mode 100644
+index 00000000000..b38a4ca232e
+--- /dev/null
++++ b/gcc/testsuite/gnat.dg/subpools1.adb
+@@ -0,0 +1,82 @@
++-- { dg-do compile }
++
++with System.Storage_Elements;
++with System.Storage_Pools.Subpools;
++
++procedure Subpools1 is
++
++   use System.Storage_Pools.Subpools;
++
++   package Local_Pools is
++
++      use System.Storage_Elements;
++
++      type Local_Pool is new Root_Storage_Pool_With_Subpools with null record;
++
++      overriding
++      function Create_Subpool (Pool: in out Local_Pool)
++                               return not null Subpool_Handle;
++
++      overriding
++      procedure Allocate_From_Subpool
++        (Pool                    : in out Local_Pool;
++         Storage_Address         :    out System.Address;
++         Size_In_Storage_Elements: in     Storage_Count;
++         Alignment               : in     Storage_Count;
++         Subpool                 : in     not null Subpool_Handle);
++
++      overriding
++      procedure Deallocate_Subpool
++        (Pool   : in out Local_Pool;
++         Subpool: in out Subpool_Handle) is null;
++
++   end Local_Pools;
++
++   package body Local_Pools is
++
++      type Local_Subpool is new Root_Subpool with null record;
++
++      Dummy_Subpool: aliased Local_Subpool;
++
++      overriding
++      function Create_Subpool (Pool: in out Local_Pool)
++                               return not null Subpool_Handle 
++      is 
++      begin 
++         return Result: not null Subpool_Handle 
++           := Dummy_Subpool'Unchecked_Access
++         do
++            Set_Pool_Of_Subpool (Result, Pool);
++         end return;
++      end;
++
++      overriding
++      procedure Allocate_From_Subpool
++        (Pool                    : in out Local_Pool;
++         Storage_Address         :    out System.Address;
++         Size_In_Storage_Elements: in     Storage_Count;
++         Alignment               : in     Storage_Count;
++         Subpool                 : in     not null Subpool_Handle)
++      is
++         type Storage_Array_Access is access Storage_Array;
++
++         New_Alloc: Storage_Array_Access
++           := new Storage_Array (1 .. Size_In_Storage_Elements + Alignment);
++      begin
++         for SE of New_Alloc.all loop
++            Storage_Address := SE'Address;
++            exit when Storage_Address mod Alignment = 0;
++         end loop;
++      end;
++
++   end Local_Pools;
++
++   A_Pool: Local_Pools.Local_Pool;
++
++   type Integer_Access is access Integer with Storage_Pool => A_Pool;
++
++   X: Integer_Access := new Integer; 
++
++begin
++   null;
++end;
+diff --git a/gcc/testsuite/lib/target-supports.exp b/gcc/testsuite/lib/target-supports.exp
+index cda0f3d350b..ea9a50ccb27 100644
+--- a/gcc/testsuite/lib/target-supports.exp
++++ b/gcc/testsuite/lib/target-supports.exp
+@@ -2555,6 +2555,26 @@ proc check_effective_target_le { } {
+     }]
+ }
+ 
++# Return 1 if we're generating code for only power8 platforms.
++
++proc check_effective_target_p8 {  } {
++  return [check_no_compiler_messages_nocache p8 assembly {
++	#if !(!defined(_ARCH_PWR9) && defined(_ARCH_PWR8))
++	#error NO
++	#endif
++  } ""]
++}
++
++# Return 1 if we're generating code for power9 and future platforms.
++
++proc check_effective_target_p9+ {  } {
++  return [check_no_compiler_messages_nocache p9+ assembly {
++	#if !(defined(_ARCH_PWR9))
++	#error NO
++	#endif
++  } ""]
++}
++
+ # Return 1 if we're generating 32-bit code using default options, 0
+ # otherwise.
+ 
 diff --git a/gcc/testsuite/obj-c++.dg/stubify-1.mm b/gcc/testsuite/obj-c++.dg/stubify-1.mm
 index c2355437afc..e8f21882de9 100644
 --- a/gcc/testsuite/obj-c++.dg/stubify-1.mm
